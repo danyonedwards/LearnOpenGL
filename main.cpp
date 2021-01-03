@@ -17,11 +17,18 @@ const char *vertexShaderSource = "#version 330 core\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
-const char* fragmentShaderSource = "#version 330 core\n"
+const char* fragmentShaderOrangeSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
 "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"}\0";
+
+const char* fragmentShaderYellowSource = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(1.0f, 1.0f, 0.1f, 1.0f);\n"
 "}\0";
 
 
@@ -46,10 +53,10 @@ unsigned int compileVertexShader() {
     return vertexShader;
 }
 
-unsigned int compileFragmentShader() {
+unsigned int compileFragmentShader(const char* shaderSource) {
     unsigned int fragmentShader;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glShaderSource(fragmentShader, 1, &shaderSource, NULL);
     glCompileShader(fragmentShader);
 
     // validate shader success
@@ -119,23 +126,19 @@ int main()
     unsigned int vertexShader; 
     vertexShader = compileVertexShader();
     // setup fragment shader
-    unsigned int fragmentShader;
-    fragmentShader = compileFragmentShader();
+    unsigned int fragmentShaderOrange, fragmentShaderYellow;
+    fragmentShaderOrange = compileFragmentShader(fragmentShaderOrangeSource);
+    fragmentShaderYellow = compileFragmentShader(fragmentShaderYellowSource);
     // compile shader program
-    unsigned int shaderProgram;
-    shaderProgram = attachShaders(vertexShader, fragmentShader);
-
+    unsigned int triangleOneShaderProgram, triangleTwoShaderProgram;
+    triangleOneShaderProgram = attachShaders(vertexShader, fragmentShaderOrange);
+    triangleTwoShaderProgram = attachShaders(vertexShader, fragmentShaderYellow);
+    
     // remove the shaders once they have been linked to the program
     glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    glDeleteShader(fragmentShaderOrange);
+    glDeleteShader(fragmentShaderYellow);
 
-
-    // Triangle - Does not use element buffer object
-  /*  float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };*/
 
     float triangleOneVertices[] = {
         -0.9, -0.5f, 0.0f,
@@ -204,10 +207,11 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         
         // Bind vao 
-        glUseProgram(shaderProgram);
+        glUseProgram(triangleOneShaderProgram);
         glBindVertexArray(t1VAO); // Draw triangle 1
         glDrawArrays(GL_TRIANGLES, 0, 3); 
 
+        glUseProgram(triangleTwoShaderProgram);
         glBindVertexArray(t2VAO); // Draw triangle 2
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -216,6 +220,7 @@ int main()
         
         // Unbind VAO
         glBindVertexArray(0);
+        glUseProgram(0);
 
         // check and call events and swap the buffers
         glfwSwapBuffers(window);
