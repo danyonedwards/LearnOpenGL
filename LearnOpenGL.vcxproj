@@ -146,8 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Downloads\glad\src\glad.c" />
-    <ClCompile Include="src\shader_loader.cpp" />
-    <ClCompile Include="src\shader_loader.h" />
+    <ClCompile Include="src\shader.h" />
     <ClCompile Include="src\key_handler.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>

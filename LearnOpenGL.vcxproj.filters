@@ -24,10 +24,7 @@
     <ClCompile Include="src\key_handler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader_loader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader_loader.h">
+    <ClCompile Include="src\shader.h">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "key_handler.h"
-#include "shader_loader.h"
+#include "shader.h"
 
 const int VIEWPORT_HEIGHT = 600;
 const int VIEWPORT_WIDTH = 800;
@@ -46,7 +46,7 @@ int main()
     glViewport(0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
     // Load shaders 
-    unsigned int triangleShaderProgram = LoadShader(vertexShaderPath, fragmentShaderPath);
+    Shader triangleShader(vertexShaderPath, fragmentShaderPath);
 
 
     // Define vertices
@@ -57,8 +57,8 @@ int main()
         -0.5,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f
     };
     float triangleTwoVertices[] = {
-        0.1, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-        0.9, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+        0.1, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+        0.9, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
         0.5,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f
     };
 
@@ -134,7 +134,7 @@ int main()
         if (vertexColorLocation == -1) std::cout << "There was an error getting the vertex location for var 'ourColor'" << std::endl;
         */
         // Bind vao 
-        glUseProgram(triangleShaderProgram);
+        triangleShader.use();
         //glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f); // Must be used after program is set
         
         glBindVertexArray(t1VAO);
