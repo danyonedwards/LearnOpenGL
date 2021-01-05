@@ -146,11 +146,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Downloads\glad\src\glad.c" />
-    <ClCompile Include="keyHandler.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\keyHandler.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="keyHandler.h" />
+    <ClInclude Include="src\keyHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
