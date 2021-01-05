@@ -146,11 +146,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Downloads\glad\src\glad.c" />
-    <ClCompile Include="src\keyHandler.cpp" />
+    <ClCompile Include="src\shader_loader.cpp" />
+    <ClCompile Include="src\shader_loader.h" />
+    <ClCompile Include="src\key_handler.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\keyHandler.h" />
+    <ClInclude Include="src\key_handler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shader.frag" />
+    <None Include="src\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
