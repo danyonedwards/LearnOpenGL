@@ -128,26 +128,17 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-  /*      float timeValue = glfwGetTime();
-        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(triangleOneShaderProgram, "ourColor");
-        if (vertexColorLocation == -1) std::cout << "There was an error getting the vertex location for var 'ourColor'" << std::endl;
-        */
         // Bind vao 
         triangleShader.use();
-        //glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f); // Must be used after program is set
+
+        triangleShader.setFloat("xOffset", 0.3f);
+
         
         glBindVertexArray(t1VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3); 
 
         glBindVertexArray(t2VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
-
-        //glUseProgram(triangleTwoShaderProgram);
-        //glBindVertexArray(t2VAO); // Draw triangle 2
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
-
 
         // DEPRECATED - Element buffers
         //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
