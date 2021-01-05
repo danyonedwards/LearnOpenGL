@@ -12,16 +12,19 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
 const char *vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
+    "out vec4 vertexColor;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   vertexColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
     "}\0";
 
 const char* fragmentShaderOrangeSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
+"uniform vec4 ourColor;\n" // Uses a uniform to set the color from the cpu
 "void main()\n"
-"{\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"{\n"  
+"   FragColor = ourColor;\n"
 "}\0";
 
 const char* fragmentShaderYellowSource = "#version 330 core\n"
@@ -203,11 +206,18 @@ int main()
         processInput(window);
 
         //rendering commands here
+        // Set the background color
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        float timeValue = glfwGetTime();
+        float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(triangleOneShaderProgram, "ourColor");
+        if (vertexColorLocation == -1) std::cout << "There was an error getting the vertex location for var 'ourColor'" << std::endl;
         
         // Bind vao 
         glUseProgram(triangleOneShaderProgram);
+        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f); // Must be used after program is set
         glBindVertexArray(t1VAO); // Draw triangle 1
         glDrawArrays(GL_TRIANGLES, 0, 3); 
 
