@@ -7,6 +7,6 @@ out vec3 vertColor; // output a color to the fragment shader
 
 void main()
 {
-    gl_Position = vec4(aPos, 1.0);
+    gl_Position = vec4(aPos.x, aPos.y * -1, aPos.z, 1.0);
     vertColor = aColor; // Set the fragColor to the colour passed in via the location 1
 }  
