@@ -6,10 +6,10 @@ void ProcessInput(GLFWwindow* window, float* mixAmount) {
 		glfwSetWindowShouldClose(window, true);
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		(*mixAmount) += 0.001;
+		(*mixAmount) += 0.1;
 	}
 	
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		(*mixAmount) -= 0.001;
+		(*mixAmount) -= 0.1;
 	}
 }
