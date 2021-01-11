@@ -13,6 +13,8 @@
 const int VIEWPORT_HEIGHT = 600;
 const int VIEWPORT_WIDTH = 800;
 
+float mixAmount = 0.0f;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 unsigned char* loadTexture(const char* texturePath, GLenum format);
@@ -58,7 +60,6 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glViewport(0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
-    std::cout << "Something" << std::endl;
     printf("OpenGL Version:%s\n", glGetString(GL_VERSION));
     printf("GLSL Version  :%s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
@@ -128,23 +129,19 @@ int main()
     shapeShader.setInt("texture1", 0);
     shapeShader.setInt("texture2", 1);
 
+
+
+    // MODIFICATIONS
+    
+    //trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
+
+
+
+
     // WIREFRAME MODE
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    float mixAmount = 0.0f;
-
-
-    // VECTORS AND MATRICES
-    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::mat4 transformation(1.0f);
-    const glm::vec3 translation(1.0f, 1.0f, 0.0f);
-
-    transformation = glm::translate(transformation, translation);
-    vec = transformation * vec;
-    std::cout << vec.x << vec.y << vec.z << std::endl;
-
-
-    glfwSwapInterval(0);
+    
+    //glfwSwapInterval(0);
     // Render loop
     while (!glfwWindowShouldClose(window)) {
         // input
@@ -156,16 +153,33 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Render rectangle
         shapeShader.use();
+
+        // Blending
         shapeShader.setFloat("mixAmount", mixAmount);
+ 
+        // Render rectangle
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
         glBindVertexArray(VAO);
+
+        // transformations
+        glm::mat4 trans(1.0f);
+        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        unsigned int location = glGetUniformLocation(shapeShader.ID, "transform");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // Count is num indices
-        
+
+        trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f));
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // Count is num indices
+
+
         // Unbind VAO
         glBindVertexArray(0);
         glUseProgram(0);
@@ -185,6 +199,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
 unsigned char* loadTexture(const char* texturePath, GLenum format){
     int width, height, nrChannels;
+    stbi_set_flip_vertically_on_load(true);
     unsigned char* textureData = stbi_load(texturePath, &width, &height, &nrChannels, 0);
      if (textureData) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, format, GL_UNSIGNED_BYTE, textureData);
