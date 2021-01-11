@@ -2,6 +2,10 @@
 #include <GlFW/glfw3.h>
 #include <iostream>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "key_handler.h"
 #include "shader.h"
 #include "stb_image.h"
@@ -128,6 +132,17 @@ int main()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     float mixAmount = 0.0f;
+
+
+    // VECTORS AND MATRICES
+    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+    glm::mat4 transformation(1.0f);
+    const glm::vec3 translation(1.0f, 1.0f, 0.0f);
+
+    transformation = glm::translate(transformation, translation);
+    vec = transformation * vec;
+    std::cout << vec.x << vec.y << vec.z << std::endl;
+
 
     glfwSwapInterval(0);
     // Render loop
